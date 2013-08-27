@@ -1,7 +1,9 @@
 sandman
 =======
+
 [![Build Status](https://travis-ci.org/jeffknupp/sandman.png?branch=develop)](https://travis-ci.org/jeffknupp/sandman)
 [![Coverage Status](https://coveralls.io/repos/jeffknupp/sandman/badge.png?branch=develop)](https://coveralls.io/r/jeffknupp/sandman?branch=develop)
+[![Stories in Ready](https://badge.waffle.io/jeffknupp/sandman.png)](http://waffle.io/jeffknupp/sandman)
 
 Documentation
 -------------
@@ -82,9 +84,15 @@ Let's start our new service and make a request:
 ]
 ```
 
+Oh, that's not enough? You also want a Django-style admin interface built
+automatically? Fine. Add one more line to the list of models to get access to
+this:
+
+![improved admin interface screenshot](/docs/images/admin_tracks_improved.jpg)
+
 With **sandman**, (almost) zero boilerplate code is required. Your existing database
 structure and schema is introspected and your database tables magically get a
-RESTful API. For each table, Sandman creates:
+RESTful API and admin interface. For each table, Sandman creates:
 
 * proper endpoints 
 * support for a configurable set of HTTP verbs 
@@ -94,15 +102,17 @@ RESTful API. For each table, Sandman creates:
     * PUT
     * DELETE
 * responses with appropriate `rel` links automatically
+* custom validation by simply defining `validate_<METHOD>` methods on your Model
+* explicitly list supported methods for a Model by setting the `__methods__` attribute
+* customize a Models endpoint by setting the `__endpoint__` method
 * essentially a HATEOAS-based service sitting in front of your database
 
-*Warning: Sandman is still very much a work in progress and is not suitable for
-use **anywhere.** Don't use it for anything important. It's also often changing 
-in backwards incompatible ways.*
+*Warning: Sandman is still very much a work in progress. Use it at your own risk. 
+It's also often changing in backwards incompatible ways.*
 
 ### Installation
 
-`pip install sandman`. 
+`pip install sandman`
 
 ### Quickstart
 
@@ -120,7 +130,7 @@ from sandman.model import register, Model
 # register(Model3)
 
 from sandman import app, db
-app.config['SQLALCHEMY_DATABASE_URI'] = '<your database connection string (using SQLAlchemy)'
+app.config['SQLALCHEMY_DATABASE_URI'] = '<your database connection string (using SQLAlchemy)>'
 app.run()
 ```
 
@@ -136,7 +146,6 @@ and try curling your new RESTful API!
 
 Take a look in the `sandman/test` directory. The application found there makes
 use of the [Chinook](http://chinookdatabase.codeplex.com) sample SQL database.
-The models file is identical to the code pasted above.
 
 ### Coming Soon
 

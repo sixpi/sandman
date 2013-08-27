@@ -4,8 +4,7 @@ from setuptools.command.test import test as TestCommand
 import codecs
 import os
 import sys
-
-import sandman
+import re
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,7 +25,7 @@ long_description = read('README.rst')
 class PyTest(TestCommand):
     def finalize_options(self):
         TestCommand.finalize_options(self)
-        self.test_args = []
+        self.test_args = ['--strict', '--verbose', '--tb=long']
         self.test_suite = True
 
     def run_tests(self):
@@ -36,7 +35,7 @@ class PyTest(TestCommand):
 
 setup(
     name='sandman',
-    version=sandman.__version__,
+    version=find_version('sandman', '__init__.py'),
     url='http://github.com/jeffknupp/sandman/',
     license='Apache Software License',
     author='Jeff Knupp',
@@ -49,7 +48,7 @@ setup(
     author_email='jeff@jeffknupp.com',
     description='Automated REST APIs for existing database-driven systems',
     long_description=long_description,
-    packages=['sandman'],
+    packages=['sandman', 'sandman.model'],
     include_package_data=True,
     platforms='any',
     test_suite='sandman.test.test_sandman',
